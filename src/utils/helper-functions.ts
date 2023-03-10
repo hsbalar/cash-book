@@ -1,4 +1,4 @@
-function* groupByDate(list) {
+function* groupByDate(list: any) {
   let groups = new Map();
   for (let item of list) {
     let group = groups.get(item.date) ?? [];
@@ -6,9 +6,9 @@ function* groupByDate(list) {
     groups.set(item.date, group);
   }
   for (let [date, data] of groups) {
-    yield { date, data };
+    yield {date, data};
   }
   return groups;
 }
 
-export { groupByDate };
+export {groupByDate};

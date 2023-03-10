@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 
 const app = createSlice({
-  name: "app",
+  name: 'app',
   initialState: {
     clientId: null,
     credential: null,
     loggedIn: false,
   },
   reducers: {
-    onLoginSuccess(state, action) {
-      const { clientId, credential } = action.payload;
+    onLoginSuccess(state: any, action: any) {
+      const {clientId, credential} = action.payload;
       state.clientId = clientId;
       state.credential = credential;
       state.loggedIn = true;
@@ -17,5 +17,5 @@ const app = createSlice({
   },
 });
 
-export const { onLoginSuccess } = app.actions;
+export const {onLoginSuccess} = app.actions;
 export default app.reducer;
