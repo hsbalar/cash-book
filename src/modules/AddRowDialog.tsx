@@ -8,6 +8,7 @@ import {
   Pressable,
   Switch,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,6 +22,7 @@ export default function AddRowDialog({modalVisible, setModalVisible}: any) {
   const [amount, onChangeAmount] = useState('');
   const [remark, onChangeRemark] = useState('');
   const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleSave = () => {
     setModalVisible(false);
@@ -31,6 +33,12 @@ export default function AddRowDialog({modalVisible, setModalVisible}: any) {
         amount,
       }) as any,
     );
+  };
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setShowDatePicker(false);
+    setDate(currentDate);
   };
 
   return (
@@ -65,17 +73,22 @@ export default function AddRowDialog({modalVisible, setModalVisible}: any) {
                 value={inOut}
               />
             </View>
-            <View style={{paddingBottom: 8}}>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode="date"
-                is24Hour={true}
-                onChange={(event: any, selectedDate: any) =>
-                  setDate(selectedDate)
-                }
-              />
-            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setShowDatePicker(true)}>
+              <View style={{paddingBottom: 8}}>
+                <Text>Date: {date.toLocaleString()}</Text>
+                {showDatePicker && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode="date"
+                    is24Hour={true}
+                    onChange={onChange}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
             <View style={{paddingBottom: 8}}>
               <TextInput
                 style={styles.input}
