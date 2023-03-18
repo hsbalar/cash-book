@@ -16,9 +16,9 @@ import format from 'date-fns/format';
 
 import {addRow} from '../states/sheet';
 
-export default function AddRowDialog({modalVisible, setModalVisible}: any) {
+export default function AddRowDialog({id, modalVisible, setModalVisible}: any) {
   const dispatch = useDispatch();
-  const [inOut, setInOut] = useState(false);
+  const [out, setOut] = useState(true);
   const [amount, onChangeAmount] = useState('');
   const [remark, onChangeRemark] = useState('');
   const [date, setDate] = useState(new Date());
@@ -28,9 +28,10 @@ export default function AddRowDialog({modalVisible, setModalVisible}: any) {
     setModalVisible(false);
     dispatch(
       addRow({
+        id,
         date: format(date, 'MM/dd/yyyy'),
         remark,
-        amount,
+        amount: out ? -amount : amount,
       }) as any,
     );
   };
@@ -66,11 +67,11 @@ export default function AddRowDialog({modalVisible, setModalVisible}: any) {
                 paddingBottom: 8,
               }}>
               <Switch
-                trackColor={{false: '#fa5035', true: '#55a45a'}}
+                trackColor={{false: '#55a45a', true: '#fa5035'}}
                 thumbColor={'#f4f3f4'}
-                ios_backgroundColor="#fa5035"
-                onValueChange={() => setInOut(previousState => !previousState)}
-                value={inOut}
+                ios_backgroundColor="#55a45a"
+                onValueChange={() => setOut((previousState) => !previousState)}
+                value={out}
               />
             </View>
             <TouchableOpacity
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    padding: 12,
+    padding: 8,
     elevation: 2,
   },
   buttonClose: {
@@ -156,11 +157,10 @@ const styles = StyleSheet.create({
     borderColor: '#e8e8e8',
     borderWidth: 2,
     borderRadius: 4,
-    marginRight: 16,
+    marginRight: 12,
   },
   buttonSave: {
     borderRadius: 4,
-
     backgroundColor: '#2096f3',
   },
   textStyle: {

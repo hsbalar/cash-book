@@ -1,104 +1,146 @@
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect} from 'react';
 import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  View,
+  SectionList,
+  RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchCashbooks} from '../states/sheet';
-import AddCashbookDialog from './AddCashbookDialog';
+import {fetchRows} from '../states/sheet';
+import AddRowDialog from './AddRowDialog';
+import {toggleAddRowDialog} from '../states/app';
 
-type ItemData = {
-  id: string;
-  title: string;
-};
-
-type ItemProps = {
-  item: ItemData;
-  onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
-};
-
-const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
-    <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-const Cashbook = ({navigation}) => {
+const Cashbook = ({route}) => {
   const dispatch = useDispatch();
-  const {cashbooks} = useSelector((state: any) => state.sheet);
-  const [modalVisible, setModalVisible] = useState(false);
+  const {rows, loading} = useSelector((state: any) => state.sheet);
+  const {showAddRowDialog} = useSelector((state: any) => state.app);
+
+  const {id} = route.params;
 
   useEffect(() => {
-    dispatch(fetchCashbooks() as any);
-  }, [dispatch]);
+    dispatch(fetchRows(id) as any);
+  }, []);
 
-  const [selectedId, setSelectedId] = useState<string>();
-
-  const renderItem = ({item}: {item: ItemData}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => {
-          setSelectedId(item.id);
-          navigation.navigate('Edit', {id: item.id});
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
+  const onRefresh = () => {
+    dispatch(fetchRows(id) as any);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
-        <Text style={[styles.textStyle]}>Add Cashbook</Text>
-      </Pressable>
-      <FlatList
-        data={cashbooks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
+    <>
+      {/* <ScrollView
+        automaticallyAdjustKeyboardInsets={true}
+        contentContainerStyle={{
+          flex: 1,
+        }}> */}
+      <View style={styles.rowHeader}>
+        <View style={{flex: 3}}>
+          <Text style={{fontSize: 18, fontWeight: '500'}}>Remark</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <Text style={{fontSize: 18, fontWeight: '500'}}>Cr/Dr</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <Text style={{fontSize: 18, fontWeight: '500'}}>Balance</Text>
+        </View>
+      </View>
+      <SectionList
+        automaticallyAdjustKeyboardInsets={true}
+        // contentContainerStyle={{
+        //   flex: 1,
+        // }}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        }
+        sections={rows}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({item: {remark, amount, balance}}) => (
+          <View style={[styles.row]}>
+            <View style={{flex: 3}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>{remark}</Text>
+            </View>
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
+              <Text style={amount > 0 ? styles.credit : styles.debit}>
+                {amount &&
+                  amount.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                  })}
+              </Text>
+            </View>
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
+              <Text>
+                {balance &&
+                  balance.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                  })}
+              </Text>
+            </View>
+          </View>
+        )}
+        renderSectionHeader={({section: {date}}) => (
+          <Text style={styles.sectionHeader}>{date}</Text>
+        )}
       />
-      <AddCashbookDialog
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+      {/* </ScrollView> */}
+      <AddRowDialog
+        id={id}
+        modalVisible={showAddRowDialog}
+        setModalVisible={() => {
+          dispatch(toggleAddRowDialog());
+        }}
       />
-    </SafeAreaView>
+    </>
   );
 };
 
+export default Cashbook;
+
 const styles = StyleSheet.create({
+  rowHeader: {
+    padding: 8,
+    fontWeight: 'bold',
+    flexDirection: 'row',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
+  row: {
+    flex: 1,
+    padding: 8,
+    paddingLeft: 24,
+    flexDirection: 'row',
+  },
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    paddingTop: 22,
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    opacity: 0.5,
+    backgroundColor: 'rgba(247,247,247,1.0)',
   },
   item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
-  title: {
-    fontSize: 32,
+  credit: {
+    color: 'green',
   },
-  button: {
-    padding: 12,
-    elevation: 2,
-    backgroundColor: '#2096f3',
+  debit: {
+    color: 'red',
   },
-  textStyle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
+  touchableOpacityStyle: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
   },
 });
-
-export default Cashbook;

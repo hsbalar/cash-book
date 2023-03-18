@@ -3,19 +3,19 @@ import {createSlice} from '@reduxjs/toolkit';
 const app = createSlice({
   name: 'app',
   initialState: {
-    clientId: null,
-    credential: null,
-    loggedIn: false,
+    showAddRowDialog: false,
+    showAddCashbookDialog: false,
   },
   reducers: {
-    onLoginSuccess(state: any, action: any) {
-      const {clientId, credential} = action.payload;
-      state.clientId = clientId;
-      state.credential = credential;
-      state.loggedIn = true;
+    toggleAddRowDialog(state) {
+      state.showAddRowDialog = !state.showAddRowDialog;
+    },
+    toggleAddCashbookDialog(state) {
+      state.showAddCashbookDialog = !state.showAddCashbookDialog;
     },
   },
 });
 
-export const {onLoginSuccess} = app.actions;
+export const {toggleAddRowDialog, toggleAddCashbookDialog} = app.actions;
+
 export default app.reducer;
