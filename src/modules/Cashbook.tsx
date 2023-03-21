@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchRows} from '../states/sheet';
 import AddRowDialog from './AddRowDialog';
 import {toggleAddRowDialog} from '../states/app';
+import Row from './Row';
 
 const Cashbook = ({route}) => {
   const dispatch = useDispatch();
@@ -29,11 +30,6 @@ const Cashbook = ({route}) => {
 
   return (
     <>
-      {/* <ScrollView
-        automaticallyAdjustKeyboardInsets={true}
-        contentContainerStyle={{
-          flex: 1,
-        }}> */}
       <View style={styles.rowHeader}>
         <View style={{flex: 3}}>
           <Text style={{fontSize: 18, fontWeight: '500'}}>Remark</Text>
@@ -47,42 +43,16 @@ const Cashbook = ({route}) => {
       </View>
       <SectionList
         automaticallyAdjustKeyboardInsets={true}
-        // contentContainerStyle={{
-        //   flex: 1,
-        // }}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }
         sections={rows}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item: {remark, amount, balance}}) => (
-          <View style={[styles.row]}>
-            <View style={{flex: 3}}>
-              <Text style={{fontSize: 16, fontWeight: '500'}}>{remark}</Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              <Text style={amount > 0 ? styles.credit : styles.debit}>
-                {amount &&
-                  amount.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                  })}
-              </Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              <Text>
-                {balance &&
-                  balance.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                  })}
-              </Text>
-            </View>
-          </View>
-        )}
+        renderItem={({item}) => <Row {...item} />}
         renderSectionHeader={({section: {date}}) => (
           <Text style={styles.sectionHeader}>{date}</Text>
         )}
       />
-      {/* </ScrollView> */}
       <AddRowDialog
         id={id}
         modalVisible={showAddRowDialog}
