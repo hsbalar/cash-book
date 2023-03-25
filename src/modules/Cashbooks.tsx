@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {
   FlatList,
-  Pressable,
   RefreshControl,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -32,7 +30,7 @@ const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
   </TouchableOpacity>
 );
 
-const Cashbooks = ({navigation}) => {
+const Cashbooks = ({navigation}: any) => {
   const dispatch = useDispatch();
   const {cashbooks, loading} = useSelector((state: any) => state.sheet);
   const {showAddCashbookDialog} = useSelector((state: any) => state.app);

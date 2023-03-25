@@ -1,56 +1,65 @@
-import React from 'react';
-import {Swipeable} from 'react-native-gesture-handler';
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Item} from '../types/cashbook';
+import React, {useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import {RectButton, Swipeable} from 'react-native-gesture-handler';
+import {Animated, StyleSheet, Text, View} from 'react-native';
+import {deleteRow, setEditRow} from '../states/sheet';
+import {toggleAddRowDialog} from '../states/app';
 
-const LeftActions = (progress: any, dragX: any) => {
-  const scale = dragX.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-  return (
-    <View style={styles.leftAction}>
-      <Animated.Text style={[styles.actionText, {transform: [{scale}]}]}>
-        Edit
-      </Animated.Text>
-    </View>
-  );
-};
+const RightActions = ({onDelete, onEdit}: any) => (
+  <View
+    style={{
+      width: 192,
+      flexDirection: 'row',
+    }}>
+    <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
+      <RectButton
+        style={[styles.rightAction, {backgroundColor: '#dd2c00'}]}
+        onPress={onDelete}>
+        <Text style={styles.actionText}>Delete</Text>
+      </RectButton>
+    </Animated.View>
+    <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
+      <RectButton
+        style={[styles.rightAction, {backgroundColor: '#388e3c'}]}
+        onPress={onEdit}>
+        <Text style={styles.actionText}>Edit</Text>
+      </RectButton>
+    </Animated.View>
+  </View>
+);
 
-const RightActions = ({progress, dragX, onPress}: any) => {
-  const scale = dragX.interpolate({
-    inputRange: [-100, 0],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-  });
-  console.log(progress);
+const Row = ({id, index, remark, amount, balance, date}: any) => {
+  const dispatch = useDispatch();
 
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.rightAction}>
-        <Animated.Text style={[styles.actionText, {transform: [{scale}]}]}>
-          Delete
-        </Animated.Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
+  const swipeableRef: any = useRef(null);
 
-const Row = ({remark, amount, balance, onRightPress}: any) => {
+  const onDelete = () => {
+    dispatch(deleteRow({id, index}) as any);
+    swipeableRef.current.close();
+  };
+
+  const onEdit = () => {
+    dispatch(
+      setEditRow({
+        date,
+        index,
+        remark,
+        amount: Math.abs(amount).toString(),
+      }) as any,
+    );
+    setTimeout(() => {
+      dispatch(toggleAddRowDialog());
+    }, 0);
+    swipeableRef.current.close();
+  };
+
   return (
     <Swipeable
-      renderLeftActions={LeftActions}
-      renderRightActions={(progress, dragX) => (
-        <RightActions
-          progress={progress}
-          dragX={dragX}
-          onPress={onRightPress}
-        />
-      )}
-      onSwipeableOpen={(directions: any) => {
-        console.log(directions);
-      }}>
+      ref={swipeableRef}
+      rightThreshold={40}
+      renderRightActions={() => (
+        <RightActions onDelete={() => onDelete()} onEdit={() => onEdit()} />
+      )}>
       <View style={[styles.row]}>
         <View style={{flex: 3}}>
           <Text style={{fontSize: 16, fontWeight: '500'}}>{remark}</Text>
@@ -85,20 +94,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   credit: {
-    color: 'green',
+    color: '#dd2c00',
   },
   debit: {
-    color: 'red',
-  },
-  leftAction: {
-    backgroundColor: '#388e3c',
-    justifyContent: 'center',
-    flex: 1,
+    color: '#388e3c',
   },
   rightAction: {
-    backgroundColor: '#dd2c00',
+    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-end',
   },
   actionText: {
     color: '#fff',

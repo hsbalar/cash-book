@@ -1,6 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {parseISO} from 'date-fns';
-import format from 'date-fns/format';
 import fetch from '../utils/fetch';
 import {groupByDate} from '../utils/helper-functions';
 
@@ -11,8 +9,9 @@ export const fetchCashbooks = createAsyncThunk('sheet/cashbooks', async () => {
 
 export const addCashbook = createAsyncThunk(
   'sheet/addCashbook',
-  async (data: any) => {
+  async (data: any, {dispatch}) => {
     await fetch('/functions/addCashbook', data);
+    dispatch(fetchCashbooks());
     return;
   },
 );
@@ -21,28 +20,51 @@ export const fetchRows = createAsyncThunk(
   'sheet/fetchRows',
   async (id: string) => {
     const response = await fetch('/functions/rows', {id});
-    const rows = response.result.map((item: any) => ({
-      ...item,
-      date: format(parseISO(item.date.iso), 'dd MMM yyyy'),
-    }));
-    return Array.from(groupByDate(rows));
+    return Array.from(groupByDate(response.result));
   },
 );
 
-export const addRow = createAsyncThunk('sheet/addRow', async (row: any) => {
-  await fetch('/functions/addRow', row);
-  return;
-});
+export const addRow = createAsyncThunk(
+  'sheet/addRow',
+  async (data: any, {dispatch}) => {
+    await fetch('/functions/addRow', data);
+    dispatch(fetchRows(data.id));
+    return;
+  },
+);
+
+export const deleteRow = createAsyncThunk(
+  'sheet/deleteRow',
+  async (data: any, {dispatch}) => {
+    await fetch('/functions/deleteRow', data);
+    dispatch(fetchRows(data.id));
+    return;
+  },
+);
+
+export const updateRow = createAsyncThunk(
+  'sheet/updateRow',
+  async (data: any, {dispatch}) => {
+    await fetch('/functions/updateRow', data);
+    dispatch(fetchRows(data.id));
+    return;
+  },
+);
 
 const app = createSlice({
   name: 'sheet',
   initialState: {
     cashbooks: [],
     rows: [],
+    editRow: null,
     refetch: false,
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    setEditRow(state, action) {
+      state.editRow = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRows.pending, (state) => {
       state.loading = true;
@@ -54,9 +76,6 @@ const app = createSlice({
     builder.addCase(fetchRows.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(addRow.fulfilled, (state) => {
-      state.refetch = true;
-    });
     builder.addCase(fetchCashbooks.pending, (state) => {
       state.loading = true;
     });
@@ -67,10 +86,9 @@ const app = createSlice({
     builder.addCase(fetchCashbooks.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(addCashbook.fulfilled, (state) => {
-      // state.refetch = true;
-    });
   },
 });
+
+export const {setEditRow} = app.actions;
 
 export default app.reducer;

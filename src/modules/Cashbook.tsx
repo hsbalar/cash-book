@@ -12,8 +12,9 @@ import {fetchRows} from '../states/sheet';
 import AddRowDialog from './AddRowDialog';
 import {toggleAddRowDialog} from '../states/app';
 import Row from './Row';
+import {formatDate} from '../utils/helper-functions';
 
-const Cashbook = ({route}) => {
+const Cashbook = ({route}: any) => {
   const dispatch = useDispatch();
   const {rows, loading} = useSelector((state: any) => state.sheet);
   const {showAddRowDialog} = useSelector((state: any) => state.app);
@@ -22,6 +23,7 @@ const Cashbook = ({route}) => {
 
   useEffect(() => {
     dispatch(fetchRows(id) as any);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {
@@ -48,15 +50,15 @@ const Cashbook = ({route}) => {
         }
         sections={rows}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <Row {...item} />}
+        renderItem={({item}) => <Row {...item} id={id} />}
         renderSectionHeader={({section: {date}}) => (
-          <Text style={styles.sectionHeader}>{date}</Text>
+          <Text style={styles.sectionHeader}>{formatDate(date.iso)}</Text>
         )}
       />
       <AddRowDialog
         id={id}
-        modalVisible={showAddRowDialog}
-        setModalVisible={() => {
+        visible={showAddRowDialog}
+        handleClose={() => {
           dispatch(toggleAddRowDialog());
         }}
       />

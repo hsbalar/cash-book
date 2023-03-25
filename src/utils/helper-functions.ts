@@ -1,3 +1,6 @@
+import {parseISO} from 'date-fns';
+import format from 'date-fns/format';
+
 function* groupByDate(list: any) {
   let groups = new Map();
   for (let item of list) {
@@ -11,4 +14,8 @@ function* groupByDate(list: any) {
   return groups;
 }
 
-export {groupByDate};
+function formatDate(date: string) {
+  return format(parseISO(date), 'dd MMM yyyy');
+}
+
+export {groupByDate, formatDate};

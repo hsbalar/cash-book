@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,30 +10,44 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import format from 'date-fns/format';
 
-import {addRow} from '../states/sheet';
+import {addRow, updateRow} from '../states/sheet';
+import {setEditRow} from '../states/sheet';
 
-export default function AddRowDialog({id, modalVisible, setModalVisible}: any) {
+export default function AddRowDialog({id, visible, handleClose}: any) {
   const dispatch = useDispatch();
+  const {editRow} = useSelector((state: any) => state.sheet);
+
   const [out, setOut] = useState(true);
   const [amount, onChangeAmount] = useState('');
   const [remark, onChangeRemark] = useState('');
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  useEffect(() => {
+    onChangeAmount(editRow?.amount || '');
+    onChangeRemark(editRow?.remark || '');
+    const newDate = editRow ? new Date(editRow.date.iso) : new Date();
+    setDate(newDate);
+  }, [editRow]);
+
   const handleSave = () => {
-    setModalVisible(false);
-    dispatch(
-      addRow({
-        id,
-        date: format(date, 'MM/dd/yyyy'),
-        remark,
-        amount: out ? -amount : amount,
-      }) as any,
-    );
+    const payload = {
+      index: editRow ? editRow.index : null,
+      id,
+      date: format(date, 'MM/dd/yyyy'),
+      remark,
+      amount: out ? -amount : amount,
+    };
+    if (editRow) {
+      dispatch(updateRow(payload) as any);
+    } else {
+      dispatch(addRow(payload) as any);
+    }
+    handleClose();
   };
 
   const onChange = (event: any, selectedDate: any) => {
@@ -42,14 +56,17 @@ export default function AddRowDialog({id, modalVisible, setModalVisible}: any) {
     setDate(currentDate);
   };
 
+  const onClose = () => {
+    handleClose();
+    dispatch(setEditRow(null));
+  };
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}>
+      visible={visible}
+      onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text
@@ -58,7 +75,7 @@ export default function AddRowDialog({id, modalVisible, setModalVisible}: any) {
               paddingBottom: 8,
               fontWeight: '500',
             }}>
-            Add Entry
+            {editRow ? 'Update' : 'Add'} Entry
           </Text>
           <View style={styles.form}>
             <View
@@ -113,13 +130,15 @@ export default function AddRowDialog({id, modalVisible, setModalVisible}: any) {
           <View style={styles.actions}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(false)}>
+              onPress={onClose}>
               <Text style={[styles.textStyle]}>Close</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonSave]}
               onPress={() => handleSave()}>
-              <Text style={styles.textStyle}>Save</Text>
+              <Text style={styles.textStyle}>
+                {editRow ? 'Update' : 'Save'}
+              </Text>
             </Pressable>
           </View>
         </View>
