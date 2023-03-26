@@ -8,18 +8,13 @@ import {
   RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchRows} from '../states/sheet';
-import AddRowDialog from './AddRowDialog';
-import {toggleAddRowDialog} from '../states/app';
 import Row from './Row';
-import {formatDate} from '../utils/helper-functions';
+import {fetchRows} from '../../states/sheet';
+import {formatDate} from '../../utils/helper-functions';
 
-const Cashbook = ({route}: any) => {
+const CashbookEntries = ({id}: any) => {
   const dispatch = useDispatch();
   const {rows, loading} = useSelector((state: any) => state.sheet);
-  const {showAddRowDialog} = useSelector((state: any) => state.app);
-
-  const {id} = route.params;
 
   useEffect(() => {
     dispatch(fetchRows(id) as any);
@@ -55,18 +50,11 @@ const Cashbook = ({route}: any) => {
           <Text style={styles.sectionHeader}>{formatDate(date.iso)}</Text>
         )}
       />
-      <AddRowDialog
-        id={id}
-        visible={showAddRowDialog}
-        handleClose={() => {
-          dispatch(toggleAddRowDialog());
-        }}
-      />
     </>
   );
 };
 
-export default Cashbook;
+export default CashbookEntries;
 
 const styles = StyleSheet.create({
   rowHeader: {

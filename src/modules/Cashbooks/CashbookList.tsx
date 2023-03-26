@@ -8,9 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchCashbooks} from '../states/sheet';
-import AddCashbookDialog from './AddCashbookDialog';
-import {toggleAddCashbookDialog} from '../states/app';
+import {fetchCashbooks} from '../../states/sheet';
 
 type ItemData = {
   id: string;
@@ -30,10 +28,9 @@ const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
   </TouchableOpacity>
 );
 
-const Cashbooks = ({navigation}: any) => {
+const CashbookList = ({navigation}: any) => {
   const dispatch = useDispatch();
   const {cashbooks, loading} = useSelector((state: any) => state.sheet);
-  const {showAddCashbookDialog} = useSelector((state: any) => state.app);
 
   useEffect(() => {
     dispatch(fetchCashbooks() as any);
@@ -74,10 +71,6 @@ const Cashbooks = ({navigation}: any) => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }
       />
-      <AddCashbookDialog
-        modalVisible={showAddCashbookDialog}
-        setModalVisible={() => dispatch(toggleAddCashbookDialog())}
-      />
     </SafeAreaView>
   );
 };
@@ -93,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Cashbooks;
+export default CashbookList;

@@ -8,16 +8,17 @@ import {
   Pressable,
   TextInput,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-import {addCashbook} from '../states/sheet';
+import {addCashbook} from '../../states/sheet';
+import {toggleAddCashbookDialog} from '../../states/app';
 
-const AddCashbookDialog = ({modalVisible, setModalVisible}: any) => {
+const AddCashbookDialog = () => {
   const dispatch = useDispatch();
+  const {showAddCashbookDialog} = useSelector((state: any) => state.app);
   const [title, setTitle] = useState('');
 
   const handleSave = () => {
-    setModalVisible(false);
     dispatch(
       addCashbook({
         title,
@@ -27,16 +28,19 @@ const AddCashbookDialog = ({modalVisible, setModalVisible}: any) => {
     setTimeout(() => {
       setTitle('');
     });
+    handleClose();
+  };
+
+  const handleClose = () => {
+    dispatch(toggleAddCashbookDialog());
   };
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}>
+      visible={showAddCashbookDialog}
+      onRequestClose={handleClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text
@@ -60,9 +64,7 @@ const AddCashbookDialog = ({modalVisible, setModalVisible}: any) => {
           <View style={styles.actions}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {
-                setModalVisible(false);
-              }}>
+              onPress={handleClose}>
               <Text style={[styles.textStyle]}>Close</Text>
             </Pressable>
             <Pressable

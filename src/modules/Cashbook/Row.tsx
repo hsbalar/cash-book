@@ -2,8 +2,8 @@ import React, {useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Animated, StyleSheet, Text, View} from 'react-native';
-import {deleteRow, setEditRow} from '../states/sheet';
-import {toggleAddRowDialog} from '../states/app';
+import {deleteRow, setEditRow} from '../../states/sheet';
+import {toggleAddRowDialog} from '../../states/app';
 
 const RightActions = ({onDelete, onEdit}: any) => (
   <View

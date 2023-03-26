@@ -14,12 +14,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import format from 'date-fns/format';
 
-import {addRow, updateRow} from '../states/sheet';
-import {setEditRow} from '../states/sheet';
+import {addRow, updateRow, setEditRow} from '../../states/sheet';
+import {toggleAddRowDialog} from '../../states/app';
 
-export default function AddRowDialog({id, visible, handleClose}: any) {
+export default function AddRowDialog({id, handleClose}: any) {
   const dispatch = useDispatch();
   const {editRow} = useSelector((state: any) => state.sheet);
+  const {showAddRowDialog} = useSelector((state: any) => state.app);
 
   const [out, setOut] = useState(true);
   const [amount, onChangeAmount] = useState('');
@@ -57,7 +58,7 @@ export default function AddRowDialog({id, visible, handleClose}: any) {
   };
 
   const onClose = () => {
-    handleClose();
+    dispatch(toggleAddRowDialog());
     dispatch(setEditRow(null));
   };
 
@@ -65,7 +66,7 @@ export default function AddRowDialog({id, visible, handleClose}: any) {
     <Modal
       animationType="slide"
       transparent={true}
-      visible={visible}
+      visible={showAddRowDialog}
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
