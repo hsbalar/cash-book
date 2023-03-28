@@ -1,89 +1,52 @@
-import React, {useState, useEffect} from 'react';
-import {
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, RefreshControl, SafeAreaView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCashbooks} from '../../states/sheet';
+import {toggleAddCashbookDialog} from '../../states/app';
 
-type ItemData = {
-  id: string;
-  title: string;
-};
-
-type ItemProps = {
-  item: ItemData;
-  onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
-};
-
-const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
-    <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
-  </TouchableOpacity>
-);
+import Item from './Item';
 
 const CashbookList = ({navigation}: any) => {
   const dispatch = useDispatch();
   const {cashbooks, loading} = useSelector((state: any) => state.sheet);
 
   useEffect(() => {
-    dispatch(fetchCashbooks() as any);
+    dispatch(fetchCashbooks());
   }, [dispatch]);
 
   const onRefresh = () => {
-    dispatch(fetchCashbooks() as any);
+    dispatch(fetchCashbooks());
   };
 
-  const [selectedId, setSelectedId] = useState<string>();
-
-  const renderItem = ({item}: {item: ItemData}) => {
-    const {id, title} = item;
-    const backgroundColor = id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => {
-          setSelectedId(id);
-          navigation.navigate('Edit', {id, title});
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
+  const onEdit = () => {
+    dispatch(toggleAddCashbookDialog());
   };
+
+  const onDelete = () => {};
 
   return (
     <SafeAreaView>
-      <FlatList
-        data={cashbooks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-        }
-      />
+      <View style={{paddingTop: 4}}>
+        <FlatList
+          data={cashbooks}
+          renderItem={({item}) => (
+            <Item
+              {...item}
+              handleClick={() => {
+                navigation.navigate('Edit', item);
+              }}
+              handleDelete={onDelete}
+              handleEdit={onEdit}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }
+        />
+      </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
 
 export default CashbookList;

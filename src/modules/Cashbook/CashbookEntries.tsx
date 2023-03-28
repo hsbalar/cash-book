@@ -10,11 +10,10 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Row from './Row';
 import {fetchRows} from '../../states/sheet';
-import {formatDate} from '../../utils/helper-functions';
 
 const CashbookEntries = ({id}: any) => {
   const dispatch = useDispatch();
-  const {rows, loading} = useSelector((state: any) => state.sheet);
+  const {rows, total, loading} = useSelector((state: any) => state.sheet);
 
   useEffect(() => {
     dispatch(fetchRows(id) as any);
@@ -29,13 +28,13 @@ const CashbookEntries = ({id}: any) => {
     <>
       <View style={styles.rowHeader}>
         <View style={{flex: 3}}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Remark</Text>
+          <Text style={{fontSize: 16, fontWeight: '500'}}>Remark</Text>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Cr/Dr</Text>
+          <Text style={{fontSize: 16, fontWeight: '500'}}>Cr/Dr</Text>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Balance</Text>
+          <Text style={{fontSize: 16, fontWeight: '500'}}>Balance</Text>
         </View>
       </View>
       <SectionList
@@ -46,10 +45,21 @@ const CashbookEntries = ({id}: any) => {
         sections={rows}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => <Row {...item} id={id} />}
-        renderSectionHeader={({section: {date}}) => (
-          <Text style={styles.sectionHeader}>{formatDate(date.iso)}</Text>
+        renderSectionHeader={({section: {dateString}}) => (
+          <Text style={styles.sectionHeader}>{dateString}</Text>
         )}
       />
+      <View style={styles.rowHeader}>
+        <View style={{flex: 3}}>
+          <Text>Total</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <Text>Cr: {total.credit}</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <Text>Dr: {total.debit}</Text>
+        </View>
+      </View>
     </>
   );
 };
@@ -59,9 +69,10 @@ export default CashbookEntries;
 const styles = StyleSheet.create({
   rowHeader: {
     padding: 8,
-    fontWeight: 'bold',
     flexDirection: 'row',
-    backgroundColor: 'rgba(247,247,247,1.0)',
+    backgroundColor: '#ddf4ff',
+    borderWidth: 1,
+    borderColor: '#54aeff66',
   },
   row: {
     flex: 1,
@@ -79,8 +90,10 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 2,
     fontSize: 14,
-    opacity: 0.5,
-    backgroundColor: 'rgba(247,247,247,1.0)',
+    color: '#57606a',
+    backgroundColor: '#f6f8fa',
+    borderWidth: 0.5,
+    borderColor: '#d0d7de',
   },
   item: {
     padding: 10,

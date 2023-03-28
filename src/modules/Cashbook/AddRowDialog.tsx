@@ -48,7 +48,7 @@ export default function AddRowDialog({id, handleClose}: any) {
     } else {
       dispatch(addRow(payload) as any);
     }
-    handleClose();
+    onClose();
   };
 
   const onChange = (event: any, selectedDate: any) => {
@@ -85,9 +85,9 @@ export default function AddRowDialog({id, handleClose}: any) {
                 paddingBottom: 8,
               }}>
               <Switch
-                trackColor={{false: '#55a45a', true: '#fa5035'}}
+                trackColor={{false: '#2da44e', true: '#cf222e'}}
                 thumbColor={'#f4f3f4'}
-                ios_backgroundColor="#55a45a"
+                ios_backgroundColor="#2da44e"
                 onValueChange={() => setOut((previousState) => !previousState)}
                 value={out}
               />
@@ -137,7 +137,7 @@ export default function AddRowDialog({id, handleClose}: any) {
             <Pressable
               style={[styles.button, styles.buttonSave]}
               onPress={() => handleSave()}>
-              <Text style={styles.textStyle}>
+              <Text style={styles.buttonSaveText}>
                 {editRow ? 'Update' : 'Save'}
               </Text>
             </Pressable>
@@ -173,15 +173,22 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonClose: {
-    backgroundColor: '#e8e8e8',
-    borderColor: '#e8e8e8',
-    borderWidth: 2,
+    backgroundColor: '#f6f8fa',
+    borderColor: '#1b1f2426',
+    borderWidth: 1,
     borderRadius: 4,
     marginRight: 12,
   },
   buttonSave: {
+    borderWidth: 1,
     borderRadius: 4,
-    backgroundColor: '#2096f3',
+    borderColor: '#2da44e',
+    backgroundColor: '#2da44e',
+  },
+  buttonSaveText: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
   },
   textStyle: {
     fontWeight: 'bold',
@@ -192,6 +199,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     padding: 8,
+    borderColor: '#d0d7de',
   },
   form: {
     flexDirection: 'column',

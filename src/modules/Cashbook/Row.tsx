@@ -13,14 +13,14 @@ const RightActions = ({onDelete, onEdit}: any) => (
     }}>
     <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
       <RectButton
-        style={[styles.rightAction, {backgroundColor: '#dd2c00'}]}
+        style={[styles.rightAction, {backgroundColor: '#cf222e'}]}
         onPress={onDelete}>
         <Text style={styles.actionText}>Delete</Text>
       </RectButton>
     </Animated.View>
     <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
       <RectButton
-        style={[styles.rightAction, {backgroundColor: '#388e3c'}]}
+        style={[styles.rightAction, {backgroundColor: '#2da44e'}]}
         onPress={onEdit}>
         <Text style={styles.actionText}>Edit</Text>
       </RectButton>
@@ -30,7 +30,6 @@ const RightActions = ({onDelete, onEdit}: any) => (
 
 const Row = ({id, index, remark, amount, balance, date}: any) => {
   const dispatch = useDispatch();
-
   const swipeableRef: any = useRef(null);
 
   const onDelete = () => {
@@ -62,7 +61,7 @@ const Row = ({id, index, remark, amount, balance, date}: any) => {
       )}>
       <View style={[styles.row]}>
         <View style={{flex: 3}}>
-          <Text style={{fontSize: 16, fontWeight: '500'}}>{remark}</Text>
+          <Text style={{fontSize: 16}}>{remark}</Text>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end'}}>
           <Text style={amount > 0 ? styles.credit : styles.debit}>
@@ -94,10 +93,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   credit: {
-    color: '#dd2c00',
+    color: '#2da44e',
   },
   debit: {
-    color: '#388e3c',
+    color: '#cf222e',
   },
   rightAction: {
     alignItems: 'center',
