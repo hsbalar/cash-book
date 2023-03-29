@@ -16,6 +16,24 @@ export const addCashbook = createAsyncThunk(
   },
 );
 
+export const deleteCashbook = createAsyncThunk(
+  'sheet/deleteCashbook',
+  async (id: string, {dispatch}) => {
+    await fetch('/functions/deleteCashbook', {id});
+    dispatch(fetchCashbooks());
+    return;
+  },
+);
+
+export const updateCashbook = createAsyncThunk(
+  'sheet/updateCashbook',
+  async (data: any, {dispatch}) => {
+    await fetch('/functions/updateCashbook', data);
+    dispatch(fetchCashbooks());
+    return;
+  },
+);
+
 export const fetchRows = createAsyncThunk(
   'sheet/fetchRows',
   async (id: string) => {
