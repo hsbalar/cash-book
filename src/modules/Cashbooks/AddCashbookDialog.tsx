@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,29 +10,36 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {addCashbook} from '../../states/sheet';
+import {addCashbook, updateCashbook, setEditRow} from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
 
 const AddCashbookDialog = () => {
   const dispatch = useDispatch();
+  const {editRow} = useSelector((state: any) => state.sheet);
   const {showAddCashbookDialog} = useSelector((state: any) => state.app);
   const [title, setTitle] = useState('');
 
+  useEffect(() => {
+    setTitle(editRow?.title || '');
+  }, [editRow]);
+
   const handleSave = () => {
-    dispatch(
-      addCashbook({
-        title,
-        headerValues: ['date', 'remark', 'amount'],
-      }) as any,
-    );
-    setTimeout(() => {
-      setTitle('');
-    });
+    const payload = {
+      id: editRow?.id,
+      title,
+      headerValues: ['date', 'remark', 'amount'],
+    };
+    if (editRow) {
+      dispatch(updateCashbook(payload));
+    } else {
+      dispatch(addCashbook(payload));
+    }
     handleClose();
   };
 
   const handleClose = () => {
     dispatch(toggleAddCashbookDialog());
+    dispatch(setEditRow(null));
   };
 
   return (
@@ -49,7 +56,7 @@ const AddCashbookDialog = () => {
               paddingBottom: 16,
               fontWeight: '500',
             }}>
-            Enter cashbook name
+            {editRow ? 'Update' : 'Enter'} cashbook name
           </Text>
           <View style={styles.form}>
             <TextInput
@@ -70,7 +77,9 @@ const AddCashbookDialog = () => {
             <Pressable
               style={[styles.button, styles.buttonSave]}
               onPress={() => handleSave()}>
-              <Text style={styles.textStyle}>Save</Text>
+              <Text style={styles.buttonSaveText}>
+                {editRow ? 'Update' : 'Save'}
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -104,15 +113,22 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonClose: {
-    backgroundColor: '#e8e8e8',
-    borderColor: '#e8e8e8',
-    borderWidth: 2,
+    backgroundColor: '#f6f8fa',
+    borderColor: '#1b1f2426',
+    borderWidth: 1,
     borderRadius: 4,
     marginRight: 12,
   },
   buttonSave: {
+    borderWidth: 1,
     borderRadius: 4,
-    backgroundColor: '#2096f3',
+    borderColor: '#2da44e',
+    backgroundColor: '#2da44e',
+  },
+  buttonSaveText: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
   },
   textStyle: {
     fontWeight: 'bold',
@@ -123,6 +139,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     padding: 8,
+    borderColor: '#d0d7de',
   },
   form: {
     flexDirection: 'column',

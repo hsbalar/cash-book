@@ -46,13 +46,7 @@ const RightActions = ({onDelete, onEdit}: any) => (
   </View>
 );
 
-const Row = ({
-  id,
-  title,
-  handleClick,
-  handleDelete,
-  handleEdit,
-}: RowProps) => {
+const Row = ({id, title, handleClick, handleDelete, handleEdit}: RowProps) => {
   const swipeableRef: any = useRef(null);
 
   const onDelete = () => {
@@ -61,7 +55,7 @@ const Row = ({
   };
 
   const onEdit = () => {
-    handleEdit(id);
+    handleEdit({id, title});
     swipeableRef.current.close();
   };
 

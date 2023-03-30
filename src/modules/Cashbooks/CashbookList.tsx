@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {FlatList, RefreshControl, SafeAreaView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchCashbooks} from '../../states/sheet';
+import {fetchCashbooks, deleteCashbook, setEditRow} from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
 
-import Item from './Item';
+import Item from './Row';
 
 const CashbookList = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -18,11 +18,16 @@ const CashbookList = ({navigation}: any) => {
     dispatch(fetchCashbooks());
   };
 
-  const onEdit = () => {
+  const onEdit = (row: any) => {
+    console.log(row);
+
+    dispatch(setEditRow(row));
     dispatch(toggleAddCashbookDialog());
   };
 
-  const onDelete = () => {};
+  const onDelete = (id: string) => {
+    dispatch(deleteCashbook(id));
+  };
 
   return (
     <SafeAreaView>
