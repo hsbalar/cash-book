@@ -1,9 +1,6 @@
 import React, {useRef} from 'react';
-import {useDispatch} from 'react-redux';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Animated, StyleSheet, Text, View} from 'react-native';
-import {deleteRow, setEditRow} from '../../states/sheet';
-import {toggleAddRowDialog} from '../../states/app';
 
 const RightActions = ({onDelete, onEdit}: any) => (
   <View
@@ -28,27 +25,30 @@ const RightActions = ({onDelete, onEdit}: any) => (
   </View>
 );
 
-const Row = ({id, index, remark, amount, balance, date}: any) => {
-  const dispatch = useDispatch();
+const Row = ({
+  id,
+  index,
+  remark,
+  amount,
+  date,
+  balance,
+  handleEdit,
+  handleDelete,
+}: any) => {
   const swipeableRef: any = useRef(null);
 
   const onDelete = () => {
-    dispatch(deleteRow({id, index}) as any);
+    handleDelete({id, index});
     swipeableRef.current.close();
   };
 
   const onEdit = () => {
-    dispatch(
-      setEditRow({
-        date,
-        index,
-        remark,
-        amount: Math.abs(amount).toString(),
-      }) as any,
-    );
-    setTimeout(() => {
-      dispatch(toggleAddRowDialog());
-    }, 0);
+    handleEdit({
+      date,
+      index,
+      remark,
+      amount: Math.abs(amount).toString(),
+    });
     swipeableRef.current.close();
   };
 
@@ -57,7 +57,7 @@ const Row = ({id, index, remark, amount, balance, date}: any) => {
       ref={swipeableRef}
       rightThreshold={40}
       renderRightActions={() => (
-        <RightActions onDelete={() => onDelete()} onEdit={() => onEdit()} />
+        <RightActions onDelete={onDelete} onEdit={onEdit} />
       )}>
       <View style={[styles.row]}>
         <View style={{flex: 3}}>

@@ -19,8 +19,6 @@ const CashbookList = ({navigation}: any) => {
   };
 
   const onEdit = (row: any) => {
-    console.log(row);
-
     dispatch(setEditRow(row));
     dispatch(toggleAddCashbookDialog());
   };

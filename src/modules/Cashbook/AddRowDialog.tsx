@@ -17,7 +17,7 @@ import format from 'date-fns/format';
 import {addRow, updateRow, setEditRow} from '../../states/sheet';
 import {toggleAddRowDialog} from '../../states/app';
 
-export default function AddRowDialog({id, handleClose}: any) {
+export default function AddRowDialog({id}: any) {
   const dispatch = useDispatch();
   const {editRow} = useSelector((state: any) => state.sheet);
   const {showAddRowDialog} = useSelector((state: any) => state.app);
@@ -44,9 +44,9 @@ export default function AddRowDialog({id, handleClose}: any) {
       amount: out ? -amount : amount,
     };
     if (editRow) {
-      dispatch(updateRow(payload) as any);
+      dispatch(updateRow(payload));
     } else {
-      dispatch(addRow(payload) as any);
+      dispatch(addRow(payload));
     }
     onClose();
   };

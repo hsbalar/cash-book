@@ -9,19 +9,29 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Row from './Row';
-import {fetchRows} from '../../states/sheet';
+import {fetchRows, deleteRow, setEditRow} from '../../states/sheet';
+import {toggleAddRowDialog} from '../../states/app';
 
 const CashbookEntries = ({id}: any) => {
   const dispatch = useDispatch();
   const {rows, total, loading} = useSelector((state: any) => state.sheet);
 
   useEffect(() => {
-    dispatch(fetchRows(id) as any);
+    dispatch(fetchRows(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {
-    dispatch(fetchRows(id) as any);
+    dispatch(fetchRows(id));
+  };
+
+  const onDelete = (data: any) => {
+    dispatch(deleteRow(data));
+  };
+
+  const onEdit = (data: any) => {
+    dispatch(setEditRow(data));
+    dispatch(toggleAddRowDialog());
   };
 
   return (
@@ -44,7 +54,9 @@ const CashbookEntries = ({id}: any) => {
         }
         sections={rows}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <Row {...item} id={id} />}
+        renderItem={({item}) => (
+          <Row {...item} id={id} handleDelete={onDelete} handleEdit={onEdit} />
+        )}
         renderSectionHeader={({section: {dateString}}) => (
           <Text style={styles.sectionHeader}>{dateString}</Text>
         )}

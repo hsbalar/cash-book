@@ -64,7 +64,7 @@ const Row = ({id, title, handleClick, handleDelete, handleEdit}: RowProps) => {
       ref={swipeableRef}
       rightThreshold={40}
       renderRightActions={() => (
-        <RightActions onDelete={() => onDelete()} onEdit={() => onEdit()} />
+        <RightActions onDelete={onDelete} onEdit={onEdit} />
       )}>
       <TouchableOpacity onPress={() => handleClick()} style={styles.item}>
         <Text style={styles.title}>{title}</Text>
