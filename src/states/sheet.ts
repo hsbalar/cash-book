@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {ICashbook, IEditRow, IRow, IRows} from '../types/cashbook';
 import fetch from '../utils/fetch';
 import {groupByDate, formatDate} from '../utils/helper-functions';
 
@@ -39,7 +40,7 @@ export const fetchRows = createAsyncThunk(
   async (id: string) => {
     const {result} = await fetch('/functions/rows', {id});
     const {list, debit, credit} = result;
-    const rows = list.map((item: any) => {
+    const rows = list.map((item: IRow) => {
       return {...item, dateString: formatDate(item.date.iso)};
     });
     return {rows: Array.from(groupByDate(rows)), total: {debit, credit}};
@@ -76,13 +77,13 @@ export const updateRow = createAsyncThunk(
 const app = createSlice({
   name: 'sheet',
   initialState: {
-    cashbooks: [],
-    rows: [],
+    cashbooks: [] as Array<ICashbook>,
+    rows: [] as Array<IRows>,
     total: {
       debit: 0,
       credit: 0,
     },
-    editRow: null,
+    editRow: null as null | IEditRow,
     refetch: false,
     loading: false,
   },
@@ -95,7 +96,7 @@ const app = createSlice({
     builder.addCase(fetchRows.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchRows.fulfilled, (state: any, action) => {
+    builder.addCase(fetchRows.fulfilled, (state, action) => {
       state.rows = action.payload.rows;
       state.total = action.payload.total;
       state.loading = false;
@@ -106,7 +107,7 @@ const app = createSlice({
     builder.addCase(fetchCashbooks.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchCashbooks.fulfilled, (state: any, action) => {
+    builder.addCase(fetchCashbooks.fulfilled, (state, action) => {
       state.cashbooks = action.payload;
       state.loading = false;
     });

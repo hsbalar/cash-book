@@ -1,8 +1,14 @@
 import React, {useRef} from 'react';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Animated, StyleSheet, Text, View} from 'react-native';
+import {IRow} from '../../types/cashbook';
 
-const RightActions = ({onDelete, onEdit}: any) => (
+interface IRightActions {
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+const RightActions = ({onDelete, onEdit}: IRightActions) => (
   <View
     style={{
       width: 192,
@@ -25,6 +31,12 @@ const RightActions = ({onDelete, onEdit}: any) => (
   </View>
 );
 
+interface IRowProps extends IRow {
+  id: string;
+  handleDelete: ({id, index}: {id: string; index: number}) => void;
+  handleEdit: ({date, index, remark, amount}: IRow) => void;
+}
+
 const Row = ({
   id,
   index,
@@ -34,7 +46,7 @@ const Row = ({
   balance,
   handleEdit,
   handleDelete,
-}: any) => {
+}: IRowProps) => {
   const swipeableRef: any = useRef(null);
 
   const onDelete = () => {
@@ -47,7 +59,7 @@ const Row = ({
       date,
       index,
       remark,
-      amount: Math.abs(amount).toString(),
+      amount: Math.abs(amount),
     });
     swipeableRef.current.close();
   };

@@ -1,14 +1,18 @@
 import React, {useEffect} from 'react';
 import {FlatList, RefreshControl, SafeAreaView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {fetchCashbooks, deleteCashbook, setEditRow} from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
 
 import Item from './Row';
+import {RootState} from '../../states/store';
+import {ICashbook} from '../../types/cashbook';
 
-const CashbookList = ({navigation}: any) => {
+const CashbookList = () => {
   const dispatch = useDispatch();
-  const {cashbooks, loading} = useSelector((state: any) => state.sheet);
+  const navigation: any = useNavigation();
+  const {cashbooks, loading} = useSelector((state: RootState) => state.sheet);
 
   useEffect(() => {
     dispatch(fetchCashbooks());
@@ -18,7 +22,7 @@ const CashbookList = ({navigation}: any) => {
     dispatch(fetchCashbooks());
   };
 
-  const onEdit = (row: any) => {
+  const onEdit = (row: ICashbook) => {
     dispatch(setEditRow(row));
     dispatch(toggleAddCashbookDialog());
   };

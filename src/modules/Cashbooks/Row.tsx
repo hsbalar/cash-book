@@ -2,15 +2,20 @@ import React, {useRef} from 'react';
 import {Text, TouchableOpacity, StyleSheet, View, Animated} from 'react-native';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 
-type RowProps = {
+interface IRowProps {
   id: string;
   title: string;
-  handleClick: Function;
-  handleDelete: Function;
-  handleEdit: Function;
-};
+  handleClick: () => void;
+  handleDelete: (id: string) => void;
+  handleEdit: ({id, title}: {id: string; title: string}) => void;
+}
 
-const RightActions = ({onDelete, onEdit}: any) => (
+interface IRightActions {
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+const RightActions = ({onDelete, onEdit}: IRightActions) => (
   <View
     style={{
       marginRight: 4,
@@ -46,7 +51,7 @@ const RightActions = ({onDelete, onEdit}: any) => (
   </View>
 );
 
-const Row = ({id, title, handleClick, handleDelete, handleEdit}: RowProps) => {
+const Row = ({id, title, handleClick, handleDelete, handleEdit}: IRowProps) => {
   const swipeableRef: any = useRef(null);
 
   const onDelete = () => {

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -12,11 +11,13 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {addCashbook, updateCashbook, setEditRow} from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
+import {RootState} from '../../states/store';
+import {actions, button, dialog, header, input} from '../../styles';
 
 const AddCashbookDialog = () => {
   const dispatch = useDispatch();
-  const {editRow} = useSelector((state: any) => state.sheet);
-  const {showAddCashbookDialog} = useSelector((state: any) => state.app);
+  const {editRow} = useSelector((state: RootState) => state.sheet);
+  const {showAddCashbookDialog} = useSelector((state: RootState) => state.app);
   const [title, setTitle] = useState('');
 
   useEffect(() => {
@@ -48,19 +49,14 @@ const AddCashbookDialog = () => {
       transparent={true}
       visible={showAddCashbookDialog}
       onRequestClose={handleClose}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text
-            style={{
-              fontSize: 18,
-              paddingBottom: 16,
-              fontWeight: '500',
-            }}>
+      <View style={styles.container}>
+        <View style={dialog.root}>
+          <Text style={header.root}>
             {editRow ? 'Update' : 'Enter'} cashbook name
           </Text>
-          <View style={styles.form}>
+          <View>
             <TextInput
-              style={styles.input}
+              style={input.root}
               maxLength={60}
               onChangeText={setTitle}
               value={title}
@@ -68,18 +64,14 @@ const AddCashbookDialog = () => {
             />
           </View>
 
-          <View style={styles.actions}>
+          <View style={actions.root}>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[button.root, button.close]}
               onPress={handleClose}>
-              <Text style={[styles.textStyle]}>Close</Text>
+              <Text style={button.text}>Close</Text>
             </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonSave]}
-              onPress={() => handleSave()}>
-              <Text style={styles.buttonSaveText}>
-                {editRow ? 'Update' : 'Save'}
-              </Text>
+            <Pressable style={[button.root, button.save]} onPress={handleSave}>
+              <Text style={button.saveText}>{editRow ? 'Update' : 'Save'}</Text>
             </Pressable>
           </View>
         </View>
@@ -89,66 +81,11 @@ const AddCashbookDialog = () => {
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
+  container: {
     flex: 1,
     padding: 24,
     justifyContent: 'center',
     backgroundColor: '#dadde17a',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 3,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    padding: 8,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: '#f6f8fa',
-    borderColor: '#1b1f2426',
-    borderWidth: 1,
-    borderRadius: 4,
-    marginRight: 12,
-  },
-  buttonSave: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: '#2da44e',
-    backgroundColor: '#2da44e',
-  },
-  buttonSaveText: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#fff',
-  },
-  textStyle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  input: {
-    borderRadius: 4,
-    height: 40,
-    borderWidth: 1,
-    padding: 8,
-    borderColor: '#d0d7de',
-  },
-  form: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  actions: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
   },
 });
 

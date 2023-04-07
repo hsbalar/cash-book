@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {
   StyleSheet,
@@ -8,13 +7,18 @@ import {
   RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
 import Row from './Row';
 import {fetchRows, deleteRow, setEditRow} from '../../states/sheet';
 import {toggleAddRowDialog} from '../../states/app';
+import {IRow} from '../../types/cashbook';
+import {RootState} from '../../states/store';
 
-const CashbookEntries = ({id}: any) => {
+const CashbookEntries = () => {
   const dispatch = useDispatch();
-  const {rows, total, loading} = useSelector((state: any) => state.sheet);
+  const route: any = useRoute();
+  const {rows, total, loading} = useSelector((state: RootState) => state.sheet);
+  const {id} = route.params;
 
   useEffect(() => {
     dispatch(fetchRows(id));
@@ -29,7 +33,7 @@ const CashbookEntries = ({id}: any) => {
     dispatch(deleteRow(data));
   };
 
-  const onEdit = (data: any) => {
+  const onEdit = (data: IRow) => {
     dispatch(setEditRow(data));
     dispatch(toggleAddRowDialog());
   };
@@ -53,7 +57,7 @@ const CashbookEntries = ({id}: any) => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }
         sections={rows}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => `${item}-${index}`}
         renderItem={({item}) => (
           <Row {...item} id={id} handleDelete={onDelete} handleEdit={onEdit} />
         )}
