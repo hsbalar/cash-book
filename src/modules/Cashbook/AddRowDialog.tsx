@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   Modal,
@@ -19,7 +18,7 @@ import {toggleAddRowDialog} from '../../states/app';
 import {RootState} from '../../states/store';
 import {actions, button, dialog, header, input} from '../../styles';
 
-export default function AddRowDialog() {
+const AddRowDialog = () => {
   const dispatch = useDispatch();
   const route: any = useRoute();
   const {editRow} = useSelector((state: RootState) => state.sheet);
@@ -56,9 +55,8 @@ export default function AddRowDialog() {
   };
 
   const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate;
     setShowDatePicker(false);
-    setDate(currentDate);
+    setDate(selectedDate);
   };
 
   const onClose = () => {
@@ -72,7 +70,7 @@ export default function AddRowDialog() {
       transparent={true}
       visible={showAddRowDialog}
       onRequestClose={onClose}>
-      <View style={styles.centeredView}>
+      <View style={dialog.container}>
         <View style={dialog.root}>
           <Text style={header.root}>{editRow ? 'Update' : 'Add'} Entry</Text>
           <View>
@@ -124,7 +122,6 @@ export default function AddRowDialog() {
               />
             </View>
           </View>
-
           <View style={actions.root}>
             <Pressable style={[button.root, button.close]} onPress={onClose}>
               <Text style={button.text}>Close</Text>
@@ -139,13 +136,6 @@ export default function AddRowDialog() {
       </View>
     </Modal>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    backgroundColor: '#dadde17a',
-  },
-});
+export default AddRowDialog;

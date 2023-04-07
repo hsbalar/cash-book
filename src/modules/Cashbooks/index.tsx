@@ -2,13 +2,11 @@ import React from 'react';
 import AddCashbookDialog from './AddCashbookDialog';
 import CashbookList from './CashbookList';
 
-const CashbooksScreen = () => {
-  return (
-    <>
-      <CashbookList />
-      <AddCashbookDialog />
-    </>
-  );
-};
+const CashbooksScreen = () => (
+  <>
+    <CashbookList />
+    <AddCashbookDialog />
+  </>
+);
 
 export default CashbooksScreen;

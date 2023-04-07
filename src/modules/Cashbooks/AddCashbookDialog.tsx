@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  Pressable,
-  TextInput,
-} from 'react-native';
+import {Text, View, Modal, Pressable, TextInput} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {addCashbook, updateCashbook, setEditRow} from '../../states/sheet';
@@ -49,7 +42,7 @@ const AddCashbookDialog = () => {
       transparent={true}
       visible={showAddCashbookDialog}
       onRequestClose={handleClose}>
-      <View style={styles.container}>
+      <View style={dialog.container}>
         <View style={dialog.root}>
           <Text style={header.root}>
             {editRow ? 'Update' : 'Enter'} cashbook name
@@ -79,14 +72,5 @@ const AddCashbookDialog = () => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    backgroundColor: '#dadde17a',
-  },
-});
 
 export default AddCashbookDialog;

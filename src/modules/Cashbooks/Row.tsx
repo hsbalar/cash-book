@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import {Text, TouchableOpacity, StyleSheet, View, Animated} from 'react-native';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
+import {rightActions} from '../../styles';
 
 interface IRowProps {
   id: string;
@@ -27,25 +28,25 @@ const RightActions = ({onDelete, onEdit}: IRightActions) => (
       style={{flex: 1, marginRight: 4, transform: [{translateX: 0}]}}>
       <RectButton
         style={[
-          styles.rightAction,
+          rightActions.root,
           {
             borderRadius: 4,
             backgroundColor: '#cf222e',
           },
         ]}
         onPress={onDelete}>
-        <Text style={styles.actionText}>Delete</Text>
+        <Text style={rightActions.text}>Delete</Text>
       </RectButton>
     </Animated.View>
     <Animated.View
       style={{flex: 1, marginLeft: 4, transform: [{translateX: 0}]}}>
       <RectButton
         style={[
-          styles.rightAction,
+          rightActions.root,
           {borderRadius: 4, backgroundColor: '#2da44e'},
         ]}
         onPress={onEdit}>
-        <Text style={styles.actionText}>Edit</Text>
+        <Text style={rightActions.text}>Edit</Text>
       </RectButton>
     </Animated.View>
   </View>
@@ -91,16 +92,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-  },
-  rightAction: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionText: {
-    color: '#fff',
-    fontWeight: '600',
-    paddingLeft: 8,
   },
 });
 

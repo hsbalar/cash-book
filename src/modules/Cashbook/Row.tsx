@@ -1,7 +1,8 @@
 import React, {useRef} from 'react';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
-import {Animated, StyleSheet, Text, View} from 'react-native';
+import {Animated, Text, View} from 'react-native';
 import {IRow} from '../../types/cashbook';
+import {cashbookRow, rightActions} from '../../styles';
 
 interface IRightActions {
   onDelete: () => void;
@@ -16,16 +17,16 @@ const RightActions = ({onDelete, onEdit}: IRightActions) => (
     }}>
     <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
       <RectButton
-        style={[styles.rightAction, {backgroundColor: '#cf222e'}]}
+        style={[rightActions.root, {backgroundColor: '#cf222e'}]}
         onPress={onDelete}>
-        <Text style={styles.actionText}>Delete</Text>
+        <Text style={rightActions.text}>Delete</Text>
       </RectButton>
     </Animated.View>
     <Animated.View style={{flex: 1, transform: [{translateX: 0}]}}>
       <RectButton
-        style={[styles.rightAction, {backgroundColor: '#2da44e'}]}
+        style={[rightActions.root, {backgroundColor: '#2da44e'}]}
         onPress={onEdit}>
-        <Text style={styles.actionText}>Edit</Text>
+        <Text style={rightActions.text}>Edit</Text>
       </RectButton>
     </Animated.View>
   </View>
@@ -71,12 +72,12 @@ const Row = ({
       renderRightActions={() => (
         <RightActions onDelete={onDelete} onEdit={onEdit} />
       )}>
-      <View style={[styles.row]}>
+      <View style={[cashbookRow.root]}>
         <View style={{flex: 3}}>
           <Text style={{fontSize: 16}}>{remark}</Text>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text style={amount > 0 ? styles.credit : styles.debit}>
+          <Text style={amount > 0 ? cashbookRow.credit : cashbookRow.debit}>
             {amount &&
               amount.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -95,31 +96,5 @@ const Row = ({
     </Swipeable>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    padding: 8,
-    paddingLeft: 24,
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-  },
-  credit: {
-    color: '#2da44e',
-  },
-  debit: {
-    color: '#cf222e',
-  },
-  rightAction: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  actionText: {
-    color: '#fff',
-    fontWeight: '600',
-    paddingLeft: 8,
-  },
-});
 
 export default Row;

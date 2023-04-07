@@ -18,18 +18,14 @@ const CashbookList = () => {
     dispatch(fetchCashbooks());
   }, [dispatch]);
 
-  const onRefresh = () => {
-    dispatch(fetchCashbooks());
-  };
+  const onRefresh = () => dispatch(fetchCashbooks());
 
   const onEdit = (row: ICashbook) => {
     dispatch(setEditRow(row));
     dispatch(toggleAddCashbookDialog());
   };
 
-  const onDelete = (id: string) => {
-    dispatch(deleteCashbook(id));
-  };
+  const onDelete = (id: string) => dispatch(deleteCashbook(id));
 
   return (
     <SafeAreaView>
@@ -39,9 +35,7 @@ const CashbookList = () => {
           renderItem={({item}) => (
             <Item
               {...item}
-              handleClick={() => {
-                navigation.navigate('Edit', item);
-              }}
+              handleClick={() => navigation.navigate('Edit', item)}
               handleDelete={onDelete}
               handleEdit={onEdit}
             />

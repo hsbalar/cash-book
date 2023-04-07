@@ -55,7 +55,26 @@ const actions = StyleSheet.create({
   },
 });
 
+const rightActions = StyleSheet.create({
+  root: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    color: '#fff',
+    fontWeight: '600',
+    paddingLeft: 8,
+  },
+});
+
 const dialog = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: '#dadde17a',
+  },
   root: {
     backgroundColor: 'white',
     borderRadius: 10,
@@ -71,4 +90,49 @@ const dialog = StyleSheet.create({
   },
 });
 
-export {button, input, header, actions, dialog};
+const row = StyleSheet.create({
+  header: {
+    padding: 8,
+    flexDirection: 'row',
+    backgroundColor: '#ddf4ff',
+    borderWidth: 1,
+    borderColor: '#54aeff66',
+  },
+  headerText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  root: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  section: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    color: '#57606a',
+    backgroundColor: '#f6f8fa',
+    borderWidth: 0.5,
+    borderColor: '#d0d7de',
+  },
+});
+
+const cashbookRow = StyleSheet.create({
+  root: {
+    flex: 1,
+    padding: 8,
+    paddingLeft: 24,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+  },
+  credit: {
+    color: '#2da44e',
+  },
+  debit: {
+    color: '#cf222e',
+  },
+});
+
+export {button, input, header, actions, dialog, row, cashbookRow, rightActions};

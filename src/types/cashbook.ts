@@ -1,4 +1,5 @@
 interface IRow {
+  id?: string;
   date: {
     iso: string;
   };
