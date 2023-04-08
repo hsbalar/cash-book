@@ -72,7 +72,7 @@ const Row = ({id, title, handleClick, handleDelete, handleEdit}: IRowProps) => {
       renderRightActions={() => (
         <RightActions onDelete={onDelete} onEdit={onEdit} />
       )}>
-      <TouchableOpacity onPress={() => handleClick()} style={styles.item}>
+      <TouchableOpacity onPress={handleClick} style={styles.item}>
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
     </Swipeable>

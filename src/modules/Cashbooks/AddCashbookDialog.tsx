@@ -34,6 +34,7 @@ const AddCashbookDialog = () => {
   const handleClose = () => {
     dispatch(toggleAddCashbookDialog());
     dispatch(setEditRow(null));
+    setTitle('');
   };
 
   return (
