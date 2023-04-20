@@ -83,7 +83,7 @@ const AddRowDialog = () => {
           <Text style={header.root}>{editRow ? 'Update' : 'Add'} Entry</Text>
           <View style={styles.cols}>
             <View style={styles.row}>
-              <Text>{cashout ? 'Cash Out' : 'Cash In'}: </Text>
+              <Text>{cashout ? 'Cash Out:' : 'Cash In:  '}</Text>
               <Switch
                 trackColor={{false: '#2da44e', true: '#cf222e'}}
                 thumbColor={'#f4f3f4'}

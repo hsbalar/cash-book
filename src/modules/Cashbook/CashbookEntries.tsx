@@ -8,6 +8,7 @@ import {toggleAddRowDialog} from '../../states/app';
 import {IRow} from '../../types/cashbook';
 import {RootState} from '../../states/store';
 import {row} from '../../styles';
+import { formatDate } from '../../utils/helper-functions';
 
 const CashbookEntries = () => {
   const dispatch = useDispatch();
@@ -52,8 +53,8 @@ const CashbookEntries = () => {
         renderItem={({item}) => (
           <Row {...item} id={id} handleDelete={onDelete} handleEdit={onEdit} />
         )}
-        renderSectionHeader={({section: {dateString}}) => (
-          <Text style={row.section}>{dateString}</Text>
+        renderSectionHeader={({section: {date}}) => (
+          <Text style={row.section}>{formatDate(date)}</Text>
         )}
       />
       <View style={row.header}>

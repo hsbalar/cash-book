@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.cashbook"
+    namespace "com.mycashbook"
     defaultConfig {
-        applicationId "com.cashbook"
+        applicationId "com.mycashbook"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

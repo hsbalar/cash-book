@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ICashbook, IEditRow, IRow, IRows} from '../types/cashbook';
 import fetch from '../utils/fetch';
-import {groupByDate, formatDate} from '../utils/helper-functions';
+import {groupByDate} from '../utils/helper-functions';
 
 export const fetchCashbooks = createAsyncThunk('sheet/cashbooks', async () => {
   const response = await fetch('/functions/cashbooks');
@@ -41,7 +41,7 @@ export const fetchRows = createAsyncThunk(
     const {result} = await fetch('/functions/rows', {id});
     const {list, debit, credit} = result;
     const rows = list.map((item: IRow) => {
-      return {...item, dateString: formatDate(item.date.iso)};
+      return {...item, date: item.date.iso};
     });
     return {rows: Array.from(groupByDate(rows)), total: {debit, credit}};
   },
