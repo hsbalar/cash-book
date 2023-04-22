@@ -1,5 +1,9 @@
 import React, {useRef} from 'react';
-import {RectButton, Swipeable} from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  RectButton,
+  Swipeable,
+} from 'react-native-gesture-handler';
 import {Animated, Text, View} from 'react-native';
 import {IRow} from '../../types/cashbook';
 import {cashbookRow, rightActions} from '../../styles';
@@ -66,34 +70,36 @@ const Row = ({
   };
 
   return (
-    <Swipeable
-      ref={swipeableRef}
-      rightThreshold={40}
-      renderRightActions={() => (
-        <RightActions onDelete={onDelete} onEdit={onEdit} />
-      )}>
-      <View style={[cashbookRow.root]}>
-        <View style={{flex: 3}}>
-          <Text style={{fontSize: 16}}>{remark}</Text>
+    <GestureHandlerRootView>
+      <Swipeable
+        ref={swipeableRef}
+        rightThreshold={40}
+        renderRightActions={() => (
+          <RightActions onDelete={onDelete} onEdit={onEdit} />
+        )}>
+        <View style={[cashbookRow.root]}>
+          <View style={{flex: 3}}>
+            <Text style={{fontSize: 16}}>{remark}</Text>
+          </View>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
+            <Text style={amount > 0 ? cashbookRow.credit : cashbookRow.debit}>
+              {amount &&
+                amount.toLocaleString('en-IN', {
+                  maximumFractionDigits: 2,
+                })}
+            </Text>
+          </View>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
+            <Text>
+              {balance &&
+                balance.toLocaleString('en-IN', {
+                  maximumFractionDigits: 2,
+                })}
+            </Text>
+          </View>
         </View>
-        <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text style={amount > 0 ? cashbookRow.credit : cashbookRow.debit}>
-            {amount &&
-              amount.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-              })}
-          </Text>
-        </View>
-        <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text>
-            {balance &&
-              balance.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-              })}
-          </Text>
-        </View>
-      </View>
-    </Swipeable>
+      </Swipeable>
+    </GestureHandlerRootView>
   );
 };
 

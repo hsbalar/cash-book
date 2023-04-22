@@ -17,7 +17,14 @@ import {useRoute} from '@react-navigation/native';
 import {addRow, updateRow, setEditRow} from '../../states/sheet';
 import {toggleAddRowDialog} from '../../states/app';
 import {RootState} from '../../states/store';
-import {actions, button, dialog, header, input} from '../../styles';
+import {
+  actions,
+  button,
+  dialog,
+  header,
+  input,
+  rippleButton,
+} from '../../styles';
 
 const AddRowDialog = () => {
   const dispatch = useDispatch();
@@ -35,12 +42,12 @@ const AddRowDialog = () => {
   useEffect(() => {
     onChangeAmount(editRow?.amount.toString() || '');
     onChangeRemark(editRow?.remark || '');
-    const newDate = editRow ? new Date(editRow.date.iso) : new Date();
+    const newDate = editRow ? new Date(editRow.date) : new Date();
     setDate(newDate);
   }, [editRow]);
 
   const handleSave = () => {
-    if (isNaN(Number(amount))) {
+    if (isNaN(Number(amount)) || !amount) {
       return;
     }
     const payload = {
@@ -89,7 +96,7 @@ const AddRowDialog = () => {
                 thumbColor={'#f4f3f4'}
                 ios_backgroundColor="#2da44e"
                 onValueChange={() =>
-                  setCashout((previousState) => !previousState)
+                  setCashout(previousState => !previousState)
                 }
                 value={cashout}
               />
@@ -126,10 +133,16 @@ const AddRowDialog = () => {
             />
           </View>
           <View style={actions.root}>
-            <Pressable style={[button.root, button.close]} onPress={onClose}>
+            <Pressable
+              style={[button.root, button.close]}
+              android_ripple={rippleButton}
+              onPress={onClose}>
               <Text style={button.text}>Close</Text>
             </Pressable>
-            <Pressable style={[button.root, button.save]} onPress={handleSave}>
+            <Pressable
+              style={[button.root, button.save]}
+              onPress={handleSave}
+              android_ripple={rippleButton}>
               <Text style={button.saveText}>{editRow ? 'Update' : 'Save'}</Text>
             </Pressable>
           </View>

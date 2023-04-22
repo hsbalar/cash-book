@@ -5,7 +5,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addCashbook, updateCashbook, setEditRow} from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
 import {RootState} from '../../states/store';
-import {actions, button, dialog, header, input} from '../../styles';
+import {
+  actions,
+  button,
+  rippleButton,
+  dialog,
+  header,
+  input,
+} from '../../styles';
 
 const AddCashbookDialog = () => {
   const dispatch = useDispatch();
@@ -61,10 +68,14 @@ const AddCashbookDialog = () => {
           <View style={actions.root}>
             <Pressable
               style={[button.root, button.close]}
-              onPress={handleClose}>
+              onPress={handleClose}
+              android_ripple={rippleButton}>
               <Text style={button.text}>Close</Text>
             </Pressable>
-            <Pressable style={[button.root, button.save]} onPress={handleSave}>
+            <Pressable
+              style={[button.root, button.save]}
+              onPress={handleSave}
+              android_ripple={rippleButton}>
               <Text style={button.saveText}>{editRow ? 'Update' : 'Save'}</Text>
             </Pressable>
           </View>

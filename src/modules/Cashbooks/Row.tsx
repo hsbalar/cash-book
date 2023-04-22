@@ -1,6 +1,10 @@
 import React, {useRef} from 'react';
 import {Text, TouchableOpacity, StyleSheet, View, Animated} from 'react-native';
-import {RectButton, Swipeable} from 'react-native-gesture-handler';
+import {
+  RectButton,
+  Swipeable,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import {rightActions} from '../../styles';
 
 interface IRowProps {
@@ -66,16 +70,18 @@ const Row = ({id, title, handleClick, handleDelete, handleEdit}: IRowProps) => {
   };
 
   return (
-    <Swipeable
-      ref={swipeableRef}
-      rightThreshold={40}
-      renderRightActions={() => (
-        <RightActions onDelete={onDelete} onEdit={onEdit} />
-      )}>
-      <TouchableOpacity onPress={handleClick} style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-      </TouchableOpacity>
-    </Swipeable>
+    <GestureHandlerRootView>
+      <Swipeable
+        ref={swipeableRef}
+        rightThreshold={40}
+        renderRightActions={() => (
+          <RightActions onDelete={onDelete} onEdit={onEdit} />
+        )}>
+        <TouchableOpacity onPress={handleClick} style={styles.item}>
+          <Text style={styles.title}>{title}</Text>
+        </TouchableOpacity>
+      </Swipeable>
+    </GestureHandlerRootView>
   );
 };
 

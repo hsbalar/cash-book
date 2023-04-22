@@ -1,12 +1,17 @@
 import React from 'react';
+import {Pressable, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {Button} from 'react-native';
 import {toggleAddCashbookDialog} from '../../states/app';
+import {rippleButton, navigationButton} from '../../styles';
 
 const AddCashbookButton = () => {
   const dispatch = useDispatch();
   return (
-    <Button title="+" onPress={() => dispatch(toggleAddCashbookDialog())} />
+    <Pressable
+      onPress={() => dispatch(toggleAddCashbookDialog())}
+      android_ripple={rippleButton}>
+      <Text style={navigationButton.root}>+</Text>
+    </Pressable>
   );
 };
 

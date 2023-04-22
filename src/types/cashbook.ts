@@ -1,8 +1,6 @@
 interface IRow {
   id?: string;
-  date: {
-    iso: string;
-  };
+  date: string;
   index: number;
   remark: string;
   amount: number;

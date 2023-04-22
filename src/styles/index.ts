@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const button = StyleSheet.create({
   root: {
@@ -135,4 +135,30 @@ const cashbookRow = StyleSheet.create({
   },
 });
 
-export {button, input, header, actions, dialog, row, cashbookRow, rightActions};
+const navigationButton = StyleSheet.create({
+  root: {
+    fontSize: 20,
+    fontWeight: '800',
+    width: 30,
+    textAlign: 'center',
+  },
+});
+
+const rippleButton = {
+  color: '#858a96a1',
+  borderless: false,
+  foreground: true,
+};
+
+export {
+  button,
+  input,
+  header,
+  actions,
+  dialog,
+  row,
+  cashbookRow,
+  rightActions,
+  navigationButton,
+  rippleButton
+};
