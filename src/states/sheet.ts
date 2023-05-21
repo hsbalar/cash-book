@@ -1,7 +1,7 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {ICashbook, IEditRow, IRow, IRows} from '../types/cashbook';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { ICashbook, IEditRow, IRow, IRows } from '../types/cashbook';
 import fetch from '../utils/fetch';
-import {groupByDate, sortRows} from '../utils/helper-functions';
+import { groupByDate, sortRows } from '../utils/helper-functions';
 
 export const fetchCashbooks = createAsyncThunk('sheet/cashbooks', async () => {
   const response = await fetch('/functions/cashbooks');
@@ -10,7 +10,7 @@ export const fetchCashbooks = createAsyncThunk('sheet/cashbooks', async () => {
 
 export const addCashbook = createAsyncThunk(
   'sheet/addCashbook',
-  async (data: any, {dispatch}) => {
+  async (data: any, { dispatch }) => {
     await fetch('/functions/addCashbook', data);
     dispatch(fetchCashbooks());
     return;
@@ -19,8 +19,8 @@ export const addCashbook = createAsyncThunk(
 
 export const deleteCashbook = createAsyncThunk(
   'sheet/deleteCashbook',
-  async (id: string, {dispatch}) => {
-    await fetch('/functions/deleteCashbook', {id});
+  async (id: string, { dispatch }) => {
+    await fetch('/functions/deleteCashbook', { id });
     dispatch(fetchCashbooks());
     return;
   },
@@ -28,18 +28,18 @@ export const deleteCashbook = createAsyncThunk(
 
 export const updateCashbook = createAsyncThunk(
   'sheet/updateCashbook',
-  async (data: any, {dispatch}) => {
+  async (data: any, { dispatch }) => {
     await fetch('/functions/updateCashbook', data);
     dispatch(fetchCashbooks());
     return;
   },
 );
 
-const aggregatedRows = (rows: Array<IRow>) => {
-  const {list, debit, credit} = sortRows(rows);
+export const aggregatedRows = (rows: Array<IRow>) => {
+  const { list, debit, credit } = sortRows(rows);
   return {
     rows: Array.from(groupByDate(list)),
-    total: {debit, credit},
+    total: { debit, credit },
     result: rows,
   };
 };
@@ -47,15 +47,15 @@ const aggregatedRows = (rows: Array<IRow>) => {
 export const fetchRows = createAsyncThunk(
   'sheet/fetchRows',
   async (id: string) => {
-    const {result} = await fetch('/functions/rows', {id});
+    const { result } = await fetch('/functions/rows', { id });
     return aggregatedRows(result);
   },
 );
 
 export const addRow = createAsyncThunk(
   'sheet/addRow',
-  async (data: IRow, {dispatch, getState}) => {
-    const {sheet} = getState();
+  async (data: IRow, { dispatch, getState }) => {
+    const { sheet } = getState();
     const result = [...sheet.result];
     result.push(data);
     dispatch(setRows(aggregatedRows(result)));
@@ -67,8 +67,8 @@ export const addRow = createAsyncThunk(
 
 export const deleteRow = createAsyncThunk(
   'sheet/deleteRow',
-  async (data: IRow, {dispatch, getState}) => {
-    const {sheet} = getState();
+  async (data: IRow, { dispatch, getState }) => {
+    const { sheet } = getState();
     const result = [...sheet.result];
     result.splice(data.index, 1);
     dispatch(setRows(aggregatedRows(result)));
@@ -80,8 +80,8 @@ export const deleteRow = createAsyncThunk(
 
 export const updateRow = createAsyncThunk(
   'sheet/updateRow',
-  async (data: IRow, {dispatch, getState}) => {
-    const {sheet} = getState();
+  async (data: IRow, { dispatch, getState }) => {
+    const { sheet } = getState();
     const result = [...sheet.result];
     result.splice(data.index, 1, data);
     dispatch(setRows(aggregatedRows(result)));
@@ -134,6 +134,6 @@ const app = createSlice({
   },
 });
 
-export const {setEditRow, setRows} = app.actions;
+export const { setEditRow, setRows } = app.actions;
 
 export default app.reducer;

@@ -24,7 +24,7 @@ const RightActions = ({onDelete, onEdit}: IRightActions) => (
   <View
     style={{
       marginRight: 4,
-      padding: 4,
+      padding: 5,
       width: 192,
       flexDirection: 'row',
     }}>
@@ -94,10 +94,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: '#54aeff66',
-    color: '#24292f',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: '500',
   },
 });
 
