@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const button = StyleSheet.create({
   root: {
@@ -160,5 +160,5 @@ export {
   cashbookRow,
   rightActions,
   navigationButton,
-  rippleButton
+  rippleButton,
 };

@@ -1,5 +1,6 @@
-import {parseISO} from 'date-fns';
 import format from 'date-fns/format';
+
+import {IRow} from '../types/cashbook';
 
 function* groupByDate(list: any) {
   let groups = new Map();
@@ -15,7 +16,34 @@ function* groupByDate(list: any) {
 }
 
 function formatDate(date: string) {
-  return format(parseISO(date), 'dd MMM yyyy');
+  return format(new Date(date), 'dd MMM, yyyy');
 }
 
-export {groupByDate, formatDate};
+function sortRows(rows: IRow[]) {
+  let initValue = 0;
+  let credit = 0;
+  let debit = 0;
+  const list = rows
+    .map(({date, remark, amount}, index) => ({
+      date,
+      remark,
+      amount: Number(amount),
+      index,
+    }))
+    .sort(
+      (a: any, b: any) => (new Date(a.date) as any) - (new Date(b.date) as any),
+    )
+    .map((row: any) => {
+      initValue = initValue + row.amount;
+      if (row.amount > 0) {
+        credit += row.amount;
+      } else {
+        debit += row.amount;
+      }
+      return {...row, balance: initValue};
+    })
+    .reverse();
+  return {list, debit, credit};
+}
+
+export {groupByDate, formatDate, sortRows};

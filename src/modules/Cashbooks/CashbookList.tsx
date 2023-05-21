@@ -40,7 +40,7 @@ const CashbookList = () => {
               handleEdit={onEdit}
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={loading} onRefresh={onRefresh} />
           }

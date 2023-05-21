@@ -53,7 +53,7 @@ const AddRowDialog = () => {
     const payload = {
       index: editRow?.index || null,
       id,
-      date: format(date, 'MM/dd/yyyy'),
+      date: format(date, 'yyyy-MM-dd'),
       remark,
       amount: cashout ? -amount : amount,
     };

@@ -8,7 +8,7 @@ import {toggleAddRowDialog} from '../../states/app';
 import {IRow} from '../../types/cashbook';
 import {RootState} from '../../states/store';
 import {row} from '../../styles';
-import { formatDate } from '../../utils/helper-functions';
+import {formatDate} from '../../utils/helper-functions';
 
 const CashbookEntries = () => {
   const dispatch = useDispatch();

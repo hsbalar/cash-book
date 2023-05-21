@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 4,
     marginHorizontal: 8,
-    backgroundColor: '#f6f8fa',
+    backgroundColor: '#ddf4ff',
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#d0d7de',
+    borderColor: '#54aeff66',
     color: '#24292f',
   },
   title: {

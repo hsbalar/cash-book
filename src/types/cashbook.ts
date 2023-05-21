@@ -1,5 +1,5 @@
 interface IRow {
-  id?: string;
+  id?: string | any;
   date: string;
   index: number;
   remark: string;
@@ -9,7 +9,7 @@ interface IRow {
 }
 
 interface IRows {
-  dateString: string;
+  date: string;
   data: IRow[];
 }
 
