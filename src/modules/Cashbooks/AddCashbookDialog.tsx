@@ -57,11 +57,13 @@ const AddCashbookDialog = () => {
           </Text>
           <View>
             <TextInput
+              autoFocus
               style={input.root}
               maxLength={60}
               onChangeText={setTitle}
               value={title}
               placeholder="Name"
+              onSubmitEditing={handleSave}
             />
           </View>
 

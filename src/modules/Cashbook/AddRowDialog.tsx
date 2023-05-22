@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -38,6 +38,7 @@ const AddRowDialog = () => {
   const [remark, onChangeRemark] = useState('');
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const remarkRef: any = useRef();
 
   useEffect(() => {
     onChangeAmount(editRow?.amount.toString() || '');
@@ -51,7 +52,7 @@ const AddRowDialog = () => {
       return;
     }
     const payload = {
-      index: editRow?.index || null,
+      index: editRow?.index ?? null,
       id,
       date: format(date, 'yyyy-MM-dd'),
       remark,
@@ -119,17 +120,26 @@ const AddRowDialog = () => {
             </TouchableOpacity>
             <TextInput
               style={input.root}
+              autoFocus
               keyboardType="number-pad"
               placeholder="Amount"
               onChangeText={onChangeAmount}
+              onSubmitEditing={() => {
+                remarkRef.current.focus();
+              }}
               value={amount}
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
             <TextInput
               style={input.root}
               maxLength={60}
               onChangeText={onChangeRemark}
+              onSubmitEditing={handleSave}
               value={remark}
               placeholder="Remark"
+              ref={remarkRef}
+              blurOnSubmit={false}
             />
           </View>
           <View style={actions.root}>

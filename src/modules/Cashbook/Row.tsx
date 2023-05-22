@@ -79,7 +79,7 @@ const Row = ({
         )}>
         <View style={[cashbookRow.root]}>
           <View style={{flex: 3}}>
-            <Text style={{fontSize: 16}}>{remark}</Text>
+            <Text style={{fontSize: 16, color: 'black'}}>{remark}</Text>
           </View>
           <View style={{flex: 1, alignItems: 'flex-end'}}>
             <Text style={amount > 0 ? cashbookRow.credit : cashbookRow.debit}>

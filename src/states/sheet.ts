@@ -52,6 +52,15 @@ export const fetchRows = createAsyncThunk(
   },
 );
 
+export const refetchRows = createAsyncThunk(
+  'sheet/refetchRows',
+  async (id: string, { dispatch }) => {
+    const { result } = await fetch('/functions/rows', { id });
+    dispatch(setRows(aggregatedRows(result)));
+    return;
+  },
+);
+
 export const addRow = createAsyncThunk(
   'sheet/addRow',
   async (data: IRow, { dispatch, getState }) => {
@@ -60,7 +69,7 @@ export const addRow = createAsyncThunk(
     result.push(data);
     dispatch(setRows(aggregatedRows(result)));
     await fetch('/functions/addRow', data);
-    dispatch(fetchRows(data.id));
+    dispatch(refetchRows(data.id));
     return;
   },
 );
@@ -73,7 +82,7 @@ export const deleteRow = createAsyncThunk(
     result.splice(data.index, 1);
     dispatch(setRows(aggregatedRows(result)));
     await fetch('/functions/deleteRow', data);
-    dispatch(fetchRows(data.id));
+    dispatch(refetchRows(data.id));
     return;
   },
 );
@@ -86,7 +95,7 @@ export const updateRow = createAsyncThunk(
     result.splice(data.index, 1, data);
     dispatch(setRows(aggregatedRows(result)));
     await fetch('/functions/updateRow', data);
-    dispatch(fetchRows(data.id));
+    dispatch(refetchRows(data.id));
     return;
   },
 );
@@ -116,10 +125,17 @@ const app = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(fetchRows.pending, state => {
+      state.loading = true;
+    });
     builder.addCase(fetchRows.fulfilled, (state, action) => {
       state.rows = action.payload.rows;
       state.total = action.payload.total;
       state.result = action.payload.result;
+      state.loading = false;
+    });
+    builder.addCase(fetchRows.rejected, state => {
+      state.loading = false;
     });
     builder.addCase(fetchCashbooks.pending, state => {
       state.loading = true;
