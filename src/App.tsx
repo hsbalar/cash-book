@@ -20,7 +20,7 @@ function App(): JSX.Element {
             name="Home"
             component={Cashbooks}
             options={{
-              title: 'Cashbooks',
+              title: 'My Cashbook',
               headerRight: () => <AddCashbookButton />,
             }}
           />

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {BASE_URL, APPLICATION_ID, REST_API_KEY} from '@env';
+import { BASE_URL, APPLICATION_ID, REST_API_KEY } from '@env';
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.common['X-Parse-Application-Id'] = APPLICATION_ID;
