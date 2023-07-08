@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useRef} from 'react';
 import {Text, TouchableOpacity, StyleSheet, View, Animated} from 'react-native';
 import {
@@ -5,6 +6,7 @@ import {
   Swipeable,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+import {RFValue} from 'react-native-responsive-fontsize';
 import {rightActions} from '../../styles';
 
 interface IRowProps {
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     borderColor: '#54aeff66',
   },
   title: {
-    fontSize: 18,
+    fontSize: RFValue(20),
     fontWeight: '500',
   },
 });

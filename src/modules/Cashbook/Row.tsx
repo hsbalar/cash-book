@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useRef} from 'react';
 import {
   GestureHandlerRootView,
@@ -77,11 +78,11 @@ const Row = ({
         renderRightActions={() => (
           <RightActions onDelete={onDelete} onEdit={onEdit} />
         )}>
-        <View style={[cashbookRow.root]}>
+        <View style={cashbookRow.root}>
           <View style={{flex: 3}}>
-            <Text style={{fontSize: 16, color: 'black'}}>{remark}</Text>
+            <Text style={cashbookRow.remark}>{remark}</Text>
           </View>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <View style={{flex: 2, alignItems: 'flex-end'}}>
             <Text style={amount > 0 ? cashbookRow.credit : cashbookRow.debit}>
               {amount &&
                 amount.toLocaleString('en-IN', {
@@ -89,8 +90,8 @@ const Row = ({
                 })}
             </Text>
           </View>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text>
+          <View style={{flex: 2, alignItems: 'flex-end'}}>
+            <Text style={cashbookRow.balance}>
               {balance &&
                 balance.toLocaleString('en-IN', {
                   maximumFractionDigits: 2,

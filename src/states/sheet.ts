@@ -2,10 +2,17 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ICashbook, IEditRow, IRow, IRows } from '../types/cashbook';
 import fetch from '../utils/fetch';
 import { groupByDate, sortRows } from '../utils/helper-functions';
+import { getData, setData } from '../utils/async-storage';
+
+export const setCashbooks = createAsyncThunk('sheet/setCashbooks', async () => {
+  const cashbooks = await getData();
+  return cashbooks;
+});
 
 export const fetchCashbooks = createAsyncThunk('sheet/cashbooks', async () => {
-  const response = await fetch('/functions/cashbooks');
-  return response.result;
+  const {result} = await fetch('/functions/cashbooks');
+  setData(result);
+  return result;
 });
 
 export const addCashbook = createAsyncThunk(
@@ -147,9 +154,12 @@ const app = createSlice({
     builder.addCase(fetchCashbooks.rejected, state => {
       state.loading = false;
     });
+    builder.addCase(setCashbooks.fulfilled, (state, action) => {
+      state.cashbooks = action.payload;
+    });
   },
 });
 
-export const { setEditRow, setRows } = app.actions;
+export const {setEditRow, setRows} = app.actions;
 
 export default app.reducer;

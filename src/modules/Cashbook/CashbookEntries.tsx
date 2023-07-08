@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {Text, View, SectionList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -36,11 +37,11 @@ const CashbookEntries = () => {
         <View style={{flex: 3}}>
           <Text style={row.headerText}>Remark</Text>
         </View>
-        <View style={row.root}>
-          <Text style={row.headerText}>Cr/Dr</Text>
+        <View style={{flex: 2}}>
+          <Text style={[row.headerText, row.textAlignRight]}>Cr/Dr</Text>
         </View>
-        <View style={row.root}>
-          <Text style={row.headerText}>Balance</Text>
+        <View style={{flex: 2}}>
+          <Text style={[row.headerText, row.textAlignRight]}>Balance</Text>
         </View>
       </View>
       <SectionList
@@ -61,11 +62,11 @@ const CashbookEntries = () => {
         <View style={{flex: 3}}>
           <Text>Total</Text>
         </View>
-        <View style={row.root}>
-          <Text>Cr: {total.credit}</Text>
+        <View style={{flex: 2}}>
+          <Text style={{textAlign: 'right'}}>Cr: {total.credit}</Text>
         </View>
-        <View style={row.root}>
-          <Text>Dr: {total.debit}</Text>
+        <View style={{flex: 2}}>
+          <Text style={{textAlign: 'right'}}>Dr: {total.debit}</Text>
         </View>
       </View>
     </>

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const button = StyleSheet.create({
   root: {
@@ -41,7 +42,7 @@ const input = StyleSheet.create({
 
 const header = StyleSheet.create({
   root: {
-    fontSize: 18,
+    fontSize: RFValue(18),
     paddingBottom: 16,
     fontWeight: '500',
   },
@@ -99,7 +100,7 @@ const row = StyleSheet.create({
     borderColor: '#54aeff66',
   },
   headerText: {
-    fontSize: 16,
+    fontSize: RFValue(15),
     fontWeight: '500',
   },
   root: {
@@ -111,33 +112,46 @@ const row = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 2,
-    fontSize: 14,
+    fontSize: RFValue(12),
     color: '#57606a',
     backgroundColor: '#f6f8fa',
     borderWidth: 0.5,
     borderColor: '#d0d7de',
+  },
+  textAlignRight: {
+    textAlign: 'right',
   },
 });
 
 const cashbookRow = StyleSheet.create({
   root: {
     flex: 1,
-    padding: 8,
-    paddingLeft: 24,
+    padding: 4,
+    paddingLeft: 18,
+    paddingRight: 8,
     flexDirection: 'row',
     backgroundColor: '#fff',
   },
+  balance: {
+    fontSize: RFValue(14),
+  },
+  remark: {
+    fontSize: RFValue(14),
+    color: 'black',
+  },
   credit: {
     color: '#2da44e',
+    fontSize: RFValue(14),
   },
   debit: {
     color: '#cf222e',
+    fontSize: RFValue(14),
   },
 });
 
 const navigationButton = StyleSheet.create({
   root: {
-    fontSize: 20,
+    fontSize: RFValue(20),
     fontWeight: '800',
     width: 30,
     textAlign: 'center',

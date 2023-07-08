@@ -8,6 +8,7 @@ import {
   setEditRow,
   setRows,
   aggregatedRows,
+  setCashbooks,
 } from '../../states/sheet';
 import {toggleAddCashbookDialog} from '../../states/app';
 
@@ -21,6 +22,7 @@ const CashbookList = () => {
   const {cashbooks, loading} = useSelector((state: RootState) => state.sheet);
 
   useEffect(() => {
+    dispatch(setCashbooks());
     dispatch(fetchCashbooks());
   }, [dispatch]);
 
