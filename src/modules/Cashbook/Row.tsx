@@ -79,7 +79,7 @@ const Row = ({
           <RightActions onDelete={onDelete} onEdit={onEdit} />
         )}>
         <View style={cashbookRow.root}>
-          <View style={{flex: 3}}>
+          <View style={{flex: 4}}>
             <Text style={cashbookRow.remark}>{remark}</Text>
           </View>
           <View style={{flex: 2, alignItems: 'flex-end'}}>

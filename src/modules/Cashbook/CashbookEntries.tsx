@@ -34,7 +34,7 @@ const CashbookEntries = () => {
   return (
     <>
       <View style={row.header}>
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <Text style={row.headerText}>Remark</Text>
         </View>
         <View style={{flex: 2}}>
@@ -59,7 +59,7 @@ const CashbookEntries = () => {
         )}
       />
       <View style={row.header}>
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <Text>Total</Text>
         </View>
         <View style={{flex: 2}}>
